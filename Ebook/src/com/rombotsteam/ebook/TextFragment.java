@@ -13,14 +13,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class TextFragment extends Fragment {
+public class TextFragment extends Fragment implements IPageSwitchListener {
 	
 	
 	private ImageView mInitialImage;
 	private TextView mPageText;
+	
+	private int mCurrentPageIdx = 0;
+	private ArrayList<String> mPages;
+	
+	private ImageButton mPrevPageBtn;
 
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,9 +47,19 @@ public class TextFragment extends Fragment {
 		mPageText = (TextView) getView().findViewById(R.id.textPage);
 		mInitialImage = (ImageView) getView().findViewById(R.id.imageInitial);
 		
-		setText();
+		mCurrentPageIdx = 0;
+		
+		loadTextFromFile("red_riding_hood.txt");
 		
 		setFont("droidserif.ttf");
+		
+		mPrevPageBtn = (ImageButton) getView().findViewById(R.id.buttonPrevPage);
+		mPrevPageBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				onPrevPage();
+			}
+		});
 	}
 
 	private void setFont(String fontFilePath) {
@@ -50,13 +67,10 @@ public class TextFragment extends Fragment {
 		mPageText.setTypeface(myTypeface);
 	}
 
-	private void setText() {
-		String fileName = "red_riding_hood.txt";
-		
+	private void loadTextFromFile(String fileName) {
 		AssetManager assetManager = getActivity().getAssets();
 	    
 		String text = "";
-		String firstLetter = "";
 		
 	    InputStream is=null;
 	    try {
@@ -71,17 +85,9 @@ public class TextFragment extends Fragment {
 	        
 	    } catch (Exception e1) {  e1.printStackTrace();}
 	    
-	    ArrayList<String> pages = PageUtil.getPages(text);
+	    mPages = PageUtil.getPages(text);
 	    
-	    int pageIdx = 0;
-		final String pageText = pages.get(pageIdx);
-		
-	    firstLetter = ""+ pageText.charAt(0);
-	    setInitialImg(firstLetter);	    
-
-		
-		String pageTextWithSpace = "        " + pageText.substring(1);
-	    mPageText.setText(pageTextWithSpace);
+		setPage();
 	    
 	    //test
 	    /*Thread t = new Thread(new Runnable() {
@@ -95,6 +101,16 @@ public class TextFragment extends Fragment {
 	    //test
 	}
 
+	private void setPage() {
+		final String pageText = mPages.get(mCurrentPageIdx);
+		
+	    String firstLetter = ""+ pageText.charAt(0);
+	    setInitialImg(firstLetter);	    
+
+		String pageTextWithSpace = "      " + pageText.substring(1);
+	    mPageText.setText(pageTextWithSpace);
+	}
+
 	private void setInitialImg(String firstLetter) {
 		AssetManager assetManager = getActivity().getAssets();
 	    
@@ -105,6 +121,20 @@ public class TextFragment extends Fragment {
 	        Bitmap mBmp = BitmapFactory.decodeStream(is);
 	        mInitialImage.setImageBitmap(mBmp);
 	    } catch (Exception e1) {  e1.printStackTrace();}
+	}
+
+	@Override
+	public void onNextPage() {
+		mCurrentPageIdx++;
+		
+		setPage();
+	}
+
+	@Override
+	public void onPrevPage() {
+		mCurrentPageIdx--;
+		
+		setPage();
 	}
 	
 }

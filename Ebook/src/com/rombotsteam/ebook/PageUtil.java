@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class PageUtil {
 
-	private static final int MAX_CHARS_PER_PAGE = 900;
+	private static final int MAX_CHARS_PER_PAGE = 700;
 	
 	public static ArrayList<String> getPages(String text) {
 		ArrayList<String> pagesList = new ArrayList<String>();

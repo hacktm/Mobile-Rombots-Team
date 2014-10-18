@@ -25,6 +25,8 @@ public class IlustrationFragment extends Fragment {
 	private ImageButton mShowClipartListButton;
 	private GridView mClipartGrid;
 	private ImageButton mShowBushListButton;
+	
+	private ImageButton mNextPageBtn;
 
 	private View mColorsLayout;
 	private ImageView mColorYellowImage;
@@ -36,15 +38,12 @@ public class IlustrationFragment extends Fragment {
 
 
 	private View mColorOrangeImage;
-
-
 	private View mColorCyanImage;
-
-
 	private View mColorGreenImage;
-
-
 	private View mColorMagentaImage;
+
+
+	private IPageSwitchListener mPageSwitchListener;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -172,7 +171,13 @@ public class IlustrationFragment extends Fragment {
 			}
 		});
 		
-		
+		mNextPageBtn = (ImageButton) getView().findViewById(R.id.buttonNextPage);
+		mNextPageBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				notifyNextPage();
+			}
+		});
 	}
 	
 	private void initClipartList() {
@@ -198,8 +203,21 @@ public class IlustrationFragment extends Fragment {
 		
 		
 	}
-	
-	
 
+	public void setPageSwitchListener(IPageSwitchListener listener) {
+		mPageSwitchListener = listener;
+	}
+
+	private void notifyNextPage() {
+		if (mPageSwitchListener != null) {
+			mPageSwitchListener.onNextPage();
+		}
+	}
+	
+	private void notifyPrevPage() {
+		if (mPageSwitchListener != null) {
+			mPageSwitchListener.onPrevPage();
+		}
+	}
 	
 }

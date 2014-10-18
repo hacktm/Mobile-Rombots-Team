@@ -5,7 +5,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements IPageSwitchListener {
+
+	private IPageSwitchListener mPageSwitchListener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -20,11 +22,29 @@ public class MainActivity extends ActionBarActivity {
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		
-		fragmentTransaction.add(R.id.drawPage, new IlustrationFragment());
+		IlustrationFragment ilustrFrag = new IlustrationFragment();
+		ilustrFrag.setPageSwitchListener(this);
+		fragmentTransaction.add(R.id.drawPage, ilustrFrag);
 		
-		fragmentTransaction.add(R.id.textPage, new TextFragment());
+		TextFragment textFrag = new TextFragment();
+		mPageSwitchListener = textFrag;
+		fragmentTransaction.add(R.id.textPage, textFrag);
 		
 		fragmentTransaction.commit();
+	}
+
+	@Override
+	public void onNextPage() {
+		if (mPageSwitchListener != null) {
+			mPageSwitchListener.onNextPage();
+		}		
+	}
+
+	@Override
+	public void onPrevPage() {
+		if (mPageSwitchListener != null) {
+			mPageSwitchListener.onPrevPage();
+		}
 	}
 	
 }

@@ -1,34 +1,47 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="${packageName}.${activityClass}" 
     android:background="@android:color/transparent">
 
-    <RelativeLayout 
-        android:layout_width="match_parent"
-    	android:layout_height="match_parent">
 
-	    <ImageView 
-	        android:id="@+id/imageInitial"
-	        android:layout_width="80dp"
-	        android:layout_height="80dp"
-	        android:layout_alignParentLeft="true"
-	        android:layout_alignParentTop="true"
-	        android:paddingLeft="10dp"
-	        android:paddingTop="10dp"
-	        android:src="@drawable/l"/>
+        <RelativeLayout 
+            android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:layout_centerInParent="true">
+    		
+		    <ImageView 
+		        android:id="@+id/imageInitial"
+		        android:layout_width="80dp"
+		        android:layout_height="80dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_alignParentTop="true"
+		        android:paddingLeft="10dp"
+		        android:paddingTop="10dp"
+		        android:src="@drawable/l"/>
+		    
+		    <TextView 
+		        android:id="@+id/textPage"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_marginLeft="50dp"
+		        android:layout_marginTop="50dp"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
+		        />
 	    
-	    <TextView 
-	        android:id="@+id/textPage"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_marginLeft="50dp"
-	        android:layout_marginTop="50dp"
-	        android:textAppearance="?android:attr/textAppearanceLarge"
-	        android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-	        />
-    
-    </RelativeLayout>
+	    </RelativeLayout>
 
-</ScrollView>
+	    <ImageButton
+	        android:id="@+id/buttonPrevPage"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	        android:layout_alignParentLeft="true"
+	        android:background="@android:color/transparent"
+	        android:src="@drawable/prev" />
+    
+    
+
+</RelativeLayout >
