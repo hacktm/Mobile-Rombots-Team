@@ -32,12 +32,14 @@
         android:visibility="invisible" >
     </GridView>
 
-    <Button
+    <ImageButton
         android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="centerInside"
+        android:layout_alignParentRight="true"        
         android:layout_below="@+id/button1"
-        android:text="Button" />
+        android:src="@drawable/doodles"
+        android:background="@android:color/transparent"  />
 
 </RelativeLayout>

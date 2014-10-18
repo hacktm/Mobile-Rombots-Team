@@ -22,7 +22,7 @@ public class IlustrationFragment extends Fragment {
 	
 	private ImageButton mShowClipartListButton;
 	private GridView mClipartGrid;
-	
+	private ImageButton mShowBushListButton;
 
 	
 	private ClipartGridAdapter mAdapter;
@@ -72,6 +72,14 @@ public class IlustrationFragment extends Fragment {
 				mPageSurface.setCurrentClipart(selClipart.mFilePath);
 				mPageSurface.setClipartSelected(true);
 				
+			}
+		});
+		
+		mShowBushListButton = (ImageButton) getView().findViewById(R.id.button2);
+		mShowBushListButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mPageSurface.setClipartSelected(false);	
 			}
 		});
 	}

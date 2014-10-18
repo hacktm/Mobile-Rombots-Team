@@ -4,10 +4,12 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -18,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class TextFragment extends Fragment {
+	
 	
 	private ImageView mInitialImage;
 	private TextView mPageText;
@@ -41,6 +44,13 @@ public class TextFragment extends Fragment {
 		mInitialImage = (ImageView) getView().findViewById(R.id.imageInitial);
 		
 		setText();
+		
+		setFont("droidserif.ttf");
+	}
+
+	private void setFont(String fontFilePath) {
+		Typeface myTypeface = Typeface.createFromAsset(getActivity().getAssets(), fontFilePath);
+		mPageText.setTypeface(myTypeface);
 	}
 
 	private void setText() {
@@ -58,19 +68,23 @@ public class TextFragment extends Fragment {
 	        int MAX_BUFFER = 1024;
 	        byte[] buffer = new byte[MAX_BUFFER];
 
-	        int firstChar = is.read();
-	        firstLetter = new String(new byte[]{(byte) firstChar}, "utf-8");
-	        
 	        while (is.read(buffer) > 0) {
 	        	text = text + new String(buffer, "utf-8");
 	        }
 	        
 	    } catch (Exception e1) {  e1.printStackTrace();}
 	    
-	    setInitialImg(firstLetter);
+	    ArrayList<String> pages = PageUtil.getPages(text);
 	    
-	    mPageText.setText(text);
-	    
+	    int pageIdx = 0;
+		String pageText = pages.get(pageIdx);
+		
+	    firstLetter = ""+ pageText.charAt(0);
+	    setInitialImg(firstLetter);	    
+
+		
+		pageText = "        " + pageText.substring(1);
+	    mPageText.setText(pageText);
 	}
 
 	private void setInitialImg(String firstLetter) {

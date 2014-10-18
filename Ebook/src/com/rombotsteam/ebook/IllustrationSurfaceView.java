@@ -111,20 +111,22 @@ public class IllustrationSurfaceView extends SurfaceView implements SurfaceHolde
 		
 		if (eventAction == MotionEvent.ACTION_DOWN) {
 			
-			boolean clipartExistsAtPos = false;
-			for (Clipart clipart : mClipartList) {
-				if (clipart.isInBounds((int) event.getX(), (int) event.getY())) {
-					clipartExistsAtPos = true;
-					break;
+			if (mIsClipartSelected) {
+				boolean clipartExistsAtPos = false;
+				for (Clipart clipart : mClipartList) {
+					if (clipart.isInBounds((int) event.getX(), (int) event.getY())) {
+						clipartExistsAtPos = true;
+						break;
+					}
 				}
-			}
-			
-			if (!clipartExistsAtPos) {
-				addClipart(event);
 				
-				updateCanvas();
-			} else {
-				selectClipart(event);
+				if (!clipartExistsAtPos) {
+					addClipart(event);
+					
+					updateCanvas();
+				} else {
+					selectClipart(event);
+				}
 			}
 			
 			Log.i("ebook", "down");
