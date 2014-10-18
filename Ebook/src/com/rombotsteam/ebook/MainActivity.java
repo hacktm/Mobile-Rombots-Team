@@ -17,14 +17,8 @@ public class MainActivity extends ActionBarActivity implements IPageSwitchListen
 		
 		initFragment();
 		
-		setupActionBar();
 	}
 
-	private void setupActionBar() {
-		ActionBar actionBar = getSupportActionBar();
-		
-		actionBar.hide();
-	}
 
 	private void initFragment() {
 		
