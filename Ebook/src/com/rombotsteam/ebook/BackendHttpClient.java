@@ -73,7 +73,7 @@ public class BackendHttpClient {
 	private void post(OutputStream os, String pageText) {
 	    List<NameValuePair> params = new ArrayList<NameValuePair>();
 	    params.add(new BasicNameValuePair("text", pageText));
-	    params.add(new BasicNameValuePair("tagResults", ""+MAX_RESULTS));
+	    //params.add(new BasicNameValuePair("tagResults", ""+MAX_RESULTS));
 	    
 	    BufferedWriter writer;
 		try {

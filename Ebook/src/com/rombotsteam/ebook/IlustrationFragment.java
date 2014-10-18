@@ -127,7 +127,7 @@ public class IlustrationFragment extends Fragment {
 		mColorYellowImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				selectBrushColor(Color.rgb(255,242,0));
+				selectBrushColor(Color.rgb(255,255,0));
 				
 				setBrushBtnImage(v);
 			}
@@ -157,7 +157,9 @@ public class IlustrationFragment extends Fragment {
 		mColorCyanImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				selectBrushColor(Color.rgb(39,170,225));
+				//selectBrushColor(Color.rgb(39,170,225));
+				
+				selectBrushColor(Color.rgb(39,250,255));
 				
 				setBrushBtnImage(v);
 			}
@@ -167,7 +169,9 @@ public class IlustrationFragment extends Fragment {
 		mColorGreenImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				selectBrushColor(Color.rgb(57,181,74));
+				//selectBrushColor(Color.rgb(57,181,74));
+				
+				selectBrushColor(Color.rgb(0,250,0));
 				
 				setBrushBtnImage(v);
 			}
@@ -188,25 +192,31 @@ public class IlustrationFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				notifyNextPage();
+				
+				clearCanvas();
 			}
 		});
 	}
 	
+	protected void clearCanvas() {
+		mPageSurface.clearAll();
+	}
+
 	private void initClipartList() {
 		mClipartList = new ArrayList<Clipart>();
 		
-		Clipart clipArt = new Clipart(getActivity(), "dragon.png", 0,0);		
+		Clipart clipArt = new Clipart(getActivity(), "hood.png", 0,0);		
 		mClipartList.add(clipArt);
 		
-		 clipArt = new Clipart(getActivity(), "rabbit.png", 0,0);		
+		 clipArt = new Clipart(getActivity(), "tree.png", 0,0);		
 		mClipartList.add(clipArt);
-		 clipArt = new Clipart(getActivity(), "dragon.png", 0,0);		
+		 clipArt = new Clipart(getActivity(), "wolf1.png", 0,0);		
 		mClipartList.add(clipArt);
 		 clipArt = new Clipart(getActivity(), "tree.png", 0,0);		
 		mClipartList.add(clipArt);
-		 clipArt = new Clipart(getActivity(), "tree1.jpg", 0,0);		
+		 clipArt = new Clipart(getActivity(), "hunter.png", 0,0);		
 		mClipartList.add(clipArt);
-		 clipArt = new Clipart(getActivity(), "dragon.png", 0,0);		
+		 clipArt = new Clipart(getActivity(), "hood.png", 0,0);		
 		mClipartList.add(clipArt);
 	}
 	

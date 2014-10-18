@@ -3,6 +3,7 @@ package com.rombotsteam.ebook;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 
 public class MainActivity extends ActionBarActivity implements IPageSwitchListener {
@@ -15,6 +16,14 @@ public class MainActivity extends ActionBarActivity implements IPageSwitchListen
 		setContentView(R.layout.activity_main);
 		
 		initFragment();
+		
+		setupActionBar();
+	}
+
+	private void setupActionBar() {
+		ActionBar actionBar = getSupportActionBar();
+		
+		actionBar.hide();
 	}
 
 	private void initFragment() {

@@ -213,4 +213,10 @@ public class IllustrationSurfaceView extends SurfaceView implements SurfaceHolde
 		mCurrentBrushColor = color;
 	}
 
+	public void clearAll() {
+		mBrushstrokeList.clear();
+		mClipartList.clear();
+		updateCanvas();
+	}
+
 }

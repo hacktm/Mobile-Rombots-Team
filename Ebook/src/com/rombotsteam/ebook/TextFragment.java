@@ -89,16 +89,6 @@ public class TextFragment extends Fragment implements IPageSwitchListener {
 	    
 		setPage();
 	    
-	    //test
-	    /*Thread t = new Thread(new Runnable() {
-			@Override
-			public void run() {
-			    BackendHttpClient client = new BackendHttpClient();
-			    client.postPage(pageText);
-			}    	
-	    });
-	    t.start();*/
-	    //test
 	}
 
 	private void setPage() {
@@ -109,6 +99,19 @@ public class TextFragment extends Fragment implements IPageSwitchListener {
 
 		String pageTextWithSpace = "      " + pageText.substring(1);
 	    mPageText.setText(pageTextWithSpace);
+	    
+	    getWordsFromBackend(pageText);
+	}
+
+	private void getWordsFromBackend(final String pageText) {
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+			    BackendHttpClient client = new BackendHttpClient();
+			    client.postPage(pageText);
+			}    	
+	    });
+	    t.start();
 	}
 
 	private void setInitialImg(String firstLetter) {
@@ -125,16 +128,20 @@ public class TextFragment extends Fragment implements IPageSwitchListener {
 
 	@Override
 	public void onNextPage() {
-		mCurrentPageIdx++;
-		
-		setPage();
+		if (mCurrentPageIdx < mPages.size()-1) {
+			mCurrentPageIdx++;
+			
+			setPage();
+		}
 	}
 
 	@Override
 	public void onPrevPage() {
-		mCurrentPageIdx--;
-		
-		setPage();
+		if (mCurrentPageIdx > 0) {
+			mCurrentPageIdx--;
+			
+			setPage();
+		}
 	}
 	
 }
