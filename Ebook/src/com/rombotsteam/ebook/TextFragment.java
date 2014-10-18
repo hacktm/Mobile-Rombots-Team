@@ -2,12 +2,14 @@ package com.rombotsteam.ebook;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +30,11 @@ public class TextFragment extends Fragment implements IPageSwitchListener {
 	private ArrayList<String> mPages;
 	
 	private ImageButton mPrevPageBtn;
+	
+	private ImageButton mEnableTTSBtn;
+	
+	private TextToSpeech mTTS;
+	private String mCurrentPageText = "";
 
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,6 +65,16 @@ public class TextFragment extends Fragment implements IPageSwitchListener {
 			@Override
 			public void onClick(View v) {
 				onPrevPage();
+			}
+		});
+		
+		mEnableTTSBtn = (ImageButton) getView().findViewById(R.id.buttonTTS);
+		
+		mEnableTTSBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startTTS(mCurrentPageText);
+				//TODO: stop TTS on btn click again
 			}
 		});
 	}
@@ -92,15 +109,15 @@ public class TextFragment extends Fragment implements IPageSwitchListener {
 	}
 
 	private void setPage() {
-		final String pageText = mPages.get(mCurrentPageIdx);
+		mCurrentPageText = mPages.get(mCurrentPageIdx);
 		
-	    String firstLetter = ""+ pageText.charAt(0);
+	    String firstLetter = ""+ mCurrentPageText.charAt(0);
 	    setInitialImg(firstLetter);	    
 
-		String pageTextWithSpace = "      " + pageText.substring(1);
+		String pageTextWithSpace = "      " + mCurrentPageText.substring(1);
 	    mPageText.setText(pageTextWithSpace);
 	    
-	    getWordsFromBackend(pageText);
+	    getWordsFromBackend(mCurrentPageText );
 	}
 
 	private void getWordsFromBackend(final String pageText) {
@@ -142,6 +159,16 @@ public class TextFragment extends Fragment implements IPageSwitchListener {
 			
 			setPage();
 		}
+	}
+	
+	private void startTTS(final String pageText) {
+		mTTS = new TextToSpeech(getActivity(), new TextToSpeech.OnInitListener() {
+		   @Override
+		   public void onInit(int status) {
+			   mTTS.setLanguage(Locale.UK);
+			   mTTS.speak(pageText, TextToSpeech.QUEUE_FLUSH, null);
+		   }
+		});
 	}
 	
 }
