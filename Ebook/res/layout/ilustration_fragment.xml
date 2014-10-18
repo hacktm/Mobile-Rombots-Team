@@ -17,7 +17,7 @@
         android:layout_height="60dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:scaleType="centerInside"
+        android:scaleType="fitXY"
         android:src="@drawable/doodles"
         android:background="@android:color/transparent" />
 
@@ -25,10 +25,10 @@
         android:id="@+id/button2"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:scaleType="centerInside"
+        android:scaleType="fitXY"
         android:layout_alignParentRight="true"        
         android:layout_below="@+id/button1"
-        android:src="@drawable/doodles"
+        android:src="@drawable/crayon_btn"
         android:background="@android:color/transparent"  />
 
     <LinearLayout
@@ -38,37 +38,40 @@
         android:layout_below="@+id/button1"
         android:layout_toLeftOf="@+id/button2"
         android:orientation="horizontal"
+        android:background="@drawable/crayon"
          >
 
         <ImageView
             android:id="@+id/imageYellow"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/doodles" />
+            android:src="@drawable/c1" />
         
         <ImageView
             android:id="@+id/imageOrange"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/doodles" />
+            android:src="@drawable/c2" />
 
         <ImageView
             android:id="@+id/imageRed"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/doodles" />
-        
-        <ImageView
-            android:id="@+id/imageGreen"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/doodles" />
+            android:src="@drawable/c3" />
         
         <ImageView
             android:id="@+id/imageCyan"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/doodles" />
+            android:src="@drawable/c4" />
+        
+        
+        <ImageView
+            android:id="@+id/imageGreen"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/c5" />
+        
         
         <!-- <ImageView
             android:id="@+id/imageBlue"
@@ -80,13 +83,13 @@
             android:id="@+id/imageMagenta"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/doodles" />
+            android:src="@drawable/c6" />
         
     </LinearLayout>
 
     <GridView
         android:id="@+id/gridView1"
-        android:layout_width="200dp"
+        android:layout_width="600dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/button1"
@@ -97,10 +100,11 @@
 
     <ImageButton
         android:id="@+id/buttonNextPage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:scaleType="fitXY"
         android:src="@drawable/next"
         android:background="@android:color/transparent"  />
 

@@ -3,7 +3,9 @@ package com.rombotsteam.ebook;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -16,6 +18,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 
 public class IlustrationFragment extends Fragment {
 
@@ -73,7 +76,16 @@ public class IlustrationFragment extends Fragment {
 		mShowClipartListButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mClipartGrid.setVisibility(View.VISIBLE);
+				if (mClipartGrid.getVisibility() == View.INVISIBLE) {
+					mClipartGrid.setVisibility(View.VISIBLE);
+					mColorsLayout.setVisibility(View.INVISIBLE);
+					resetBrushBtnImage();
+				} else {
+					mClipartGrid.setVisibility(View.INVISIBLE);
+					resetBrushBtnImage();
+					
+					setEraserBrush();
+				}
 			}
 		});
 		
@@ -100,12 +112,12 @@ public class IlustrationFragment extends Fragment {
 			public void onClick(View v) {
 				
 				if (mColorsLayout.getVisibility() == View.VISIBLE) {
+					resetBrushBtnImage();
 					mColorsLayout.setVisibility(View.INVISIBLE);
-					// erase brush selected
-					mPageSurface.setClipartSelected(false);
-					mPageSurface.setCurrentBrushColor(Color.TRANSPARENT);
+					setEraserBrush();
 				} else {
 					mColorsLayout.setVisibility(View.VISIBLE);
+					mClipartGrid.setVisibility(View.INVISIBLE);
 				}
 			}
 		});
@@ -115,19 +127,19 @@ public class IlustrationFragment extends Fragment {
 		mColorYellowImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mPageSurface.setClipartSelected(false);
-				mColorsLayout.setVisibility(View.INVISIBLE);
-				mPageSurface.setCurrentBrushColor(Color.rgb(255,242,0));
+				selectBrushColor(Color.rgb(255,242,0));
+				
+				setBrushBtnImage(v);
 			}
 		});
 		
 		mColorOrangeImage = (ImageView) getView().findViewById(R.id.imageOrange);
 		mColorOrangeImage.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v) {
-				mPageSurface.setClipartSelected(false);
-				mColorsLayout.setVisibility(View.INVISIBLE);
-				mPageSurface.setCurrentBrushColor(Color.rgb(247,0,0));				
+			public void onClick(View v) {				
+				selectBrushColor(Color.rgb(247,0,0));
+				
+				setBrushBtnImage(v);
 			}
 		});
 		
@@ -135,9 +147,9 @@ public class IlustrationFragment extends Fragment {
 		mColorRedImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mPageSurface.setClipartSelected(false);
-				mColorsLayout.setVisibility(View.INVISIBLE);
-				mPageSurface.setCurrentBrushColor(Color.rgb(218,28,92));
+				selectBrushColor(Color.rgb(218,28,92));
+				
+				setBrushBtnImage(v);
 			}
 		});
 		
@@ -145,9 +157,9 @@ public class IlustrationFragment extends Fragment {
 		mColorCyanImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mPageSurface.setClipartSelected(false);
-				mColorsLayout.setVisibility(View.INVISIBLE);
-				mPageSurface.setCurrentBrushColor(Color.rgb(39,170,225));
+				selectBrushColor(Color.rgb(39,170,225));
+				
+				setBrushBtnImage(v);
 			}
 		});
 		
@@ -155,9 +167,9 @@ public class IlustrationFragment extends Fragment {
 		mColorGreenImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mPageSurface.setClipartSelected(false);
-				mColorsLayout.setVisibility(View.INVISIBLE);
-				mPageSurface.setCurrentBrushColor(Color.rgb(57,181,74));
+				selectBrushColor(Color.rgb(57,181,74));
+				
+				setBrushBtnImage(v);
 			}
 		});
 		
@@ -165,9 +177,9 @@ public class IlustrationFragment extends Fragment {
 		mColorMagentaImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mPageSurface.setClipartSelected(false);
-				mColorsLayout.setVisibility(View.INVISIBLE);
-				mPageSurface.setCurrentBrushColor(Color.rgb(146,39,143));
+				selectBrushColor(Color.rgb(146,39,143));
+				
+				setBrushBtnImage(v);
 			}
 		});
 		
@@ -218,6 +230,28 @@ public class IlustrationFragment extends Fragment {
 		if (mPageSwitchListener != null) {
 			mPageSwitchListener.onPrevPage();
 		}
+	}
+	
+	private void setEraserBrush() {
+		// erase brush selected
+		mPageSurface.setClipartSelected(false);
+		mPageSurface.setCurrentBrushColor(Color.TRANSPARENT);
+	}
+	
+	private void selectBrushColor(int color) {
+		mPageSurface.setClipartSelected(false);
+		mColorsLayout.setVisibility(View.INVISIBLE);
+		mPageSurface.setCurrentBrushColor(color);
+	}
+
+	private void setBrushBtnImage(View v) {
+		ImageView iv = (ImageView)v;
+		Bitmap bitmap = ((BitmapDrawable)iv.getDrawable()).getBitmap();
+		mShowBushListButton.setImageBitmap(bitmap);
+	}
+	
+	private void resetBrushBtnImage() {
+		mShowBushListButton.setImageResource(R.drawable.crayon_btn);
 	}
 	
 }
