@@ -3,30 +3,27 @@ package com.rombotsteam.ebook;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 
 public class IlustrationFragment extends Fragment {
 
 	private IllustrationSurfaceView mPageSurface;
+
 	
-	private Button mShowClipartListButton;
+	private ImageButton mShowClipartListButton;
 	private GridView mClipartGrid;
+	
+
 	
 	private ClipartGridAdapter mAdapter;
 
@@ -55,7 +52,7 @@ public class IlustrationFragment extends Fragment {
 		mAdapter = new ClipartGridAdapter(getActivity(), R.layout.clipart_grid_item, R.id.textPage, mClipartList);
 		mClipartGrid.setAdapter(mAdapter);
 		
-		mShowClipartListButton = (Button) getView().findViewById(R.id.button1);
+		mShowClipartListButton = (ImageButton) getView().findViewById(R.id.button1);
 		
 		mShowClipartListButton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -70,8 +67,11 @@ public class IlustrationFragment extends Fragment {
 				
 				Clipart selClipart = mAdapter.getItem(position);
 				
-				Log.w("ebook", "Selected " + position + " " + selClipart);
 				mClipartGrid.setVisibility(View.INVISIBLE);
+				
+				mPageSurface.setCurrentClipart(selClipart.mFilePath);
+				mPageSurface.setClipartSelected(true);
+				
 			}
 		});
 	}
@@ -79,18 +79,18 @@ public class IlustrationFragment extends Fragment {
 	private void initClipartList() {
 		mClipartList = new ArrayList<Clipart>();
 		
-		Clipart clipArt = new Clipart(getActivity(), R.drawable.tree1, 0,0);		
+		Clipart clipArt = new Clipart(getActivity(), "dragon.png", 0,0);		
 		mClipartList.add(clipArt);
 		
-		 clipArt = new Clipart(getActivity(), R.drawable.tree1, 0,0);		
+		 clipArt = new Clipart(getActivity(), "rabbit.png", 0,0);		
 		mClipartList.add(clipArt);
-		 clipArt = new Clipart(getActivity(), R.drawable.tree1, 0,0);		
+		 clipArt = new Clipart(getActivity(), "dragon.png", 0,0);		
 		mClipartList.add(clipArt);
-		 clipArt = new Clipart(getActivity(), R.drawable.tree1, 0,0);		
+		 clipArt = new Clipart(getActivity(), "tree.png", 0,0);		
 		mClipartList.add(clipArt);
-		 clipArt = new Clipart(getActivity(), R.drawable.tree1, 0,0);		
+		 clipArt = new Clipart(getActivity(), "tree1.jpg", 0,0);		
 		mClipartList.add(clipArt);
-		 clipArt = new Clipart(getActivity(), R.drawable.tree1, 0,0);		
+		 clipArt = new Clipart(getActivity(), "dragon.png", 0,0);		
 		mClipartList.add(clipArt);
 	}
 	

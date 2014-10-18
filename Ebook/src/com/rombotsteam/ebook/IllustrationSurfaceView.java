@@ -5,10 +5,14 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Paint.Style;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -23,23 +27,26 @@ public class IllustrationSurfaceView extends SurfaceView implements SurfaceHolde
 	  
 	private ArrayList<Clipart> mClipartList = new ArrayList<Clipart>();
 	
+	private ArrayList<Brush> mBrushstrokeList = new ArrayList<Brush>();
+	
+	private Bitmap mBackgroudBmp;
+	
+	private String mCurrentClipartFilePath;
+	private boolean mIsClipartSelected;
+	
+	private int mCurrentBrushColor;
+	private boolean mIsEraserSelected;
+	
     public IllustrationSurfaceView(Context context, AttributeSet attSet) {
     	super(context, attSet);
 	    
 	    sh = getHolder();
 	    sh.addCallback(this);
-	    paint.setColor(Color.BLUE);
-	    paint.setStyle(Style.FILL);
+	    
+	    mBackgroudBmp = BitmapFactory.decodeResource(getResources(), R.drawable.backgroundb);
 	}
 	  
 	public void surfaceCreated(SurfaceHolder holder) {
-	    Canvas canvas = sh.lockCanvas();
-	    canvas.drawColor(Color.BLACK);
-	    canvas.drawCircle(100, 200, 50, paint);
-	    sh.unlockCanvasAndPost(canvas);
-	    
-	    test();
-	    
 	    Log.e("ebook", "created");
 	    
 	    setOnTouchListener(new OnTouchListener() {
@@ -51,6 +58,8 @@ public class IllustrationSurfaceView extends SurfaceView implements SurfaceHolde
 			}
 
 		});
+	    
+	    updateCanvas();
 	}
 	  
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
@@ -58,27 +67,40 @@ public class IllustrationSurfaceView extends SurfaceView implements SurfaceHolde
 
 	public void surfaceDestroyed(SurfaceHolder holder) {
 	}
-
-	public void test() {
+	
+	public void updateCanvasColor() {
 		Canvas canvas  = sh.lockCanvas();
 		
-		canvas.restore();
-		
-		Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
-		canvas.drawBitmap(b, 10, 10, new Paint());
-		
-		sh.unlockCanvasAndPost(canvas);		
+		canvas.drawColor(Color.BLUE);
+				
+		sh.unlockCanvasAndPost(canvas);
 	}
 	
-	private void update() {
+	private void updateCanvas() {
 		Canvas canvas  = sh.lockCanvas();
 		
-		canvas.drawColor(Color.WHITE);
+		canvas.drawColor(Color.TRANSPARENT);
+		
+		Rect srcRect = new Rect(mBackgroudBmp.getWidth()/2, 0, mBackgroudBmp.getWidth(), mBackgroudBmp.getHeight());
+		canvas.drawBitmap(mBackgroudBmp, srcRect, new Rect(0,0,canvas.getWidth(), canvas.getHeight()), paint);
+		
+		
+		Paint paint = new Paint();
 		
 		for (Clipart clipart : mClipartList) {
 			if (clipart.mBmp != null) {
-				canvas.drawBitmap(clipart.mBmp, clipart.mPosX, clipart.mPosY, new Paint());
+				canvas.drawBitmap(clipart.mBmp, clipart.mPosX, clipart.mPosY, paint);
 			}
+		}
+		
+		paint = new Paint();
+		paint.setXfermode(new PorterDuffXfermode(Mode.MULTIPLY));
+		
+		
+		for (Brush brushStroke : mBrushstrokeList) {
+			paint.setColor(brushStroke.mColor);
+			paint.setStyle(Paint.Style.FILL);
+			canvas.drawCircle(brushStroke.mPosX, brushStroke.mPosY, brushStroke.mRadius, paint);
 		}
 		
 		sh.unlockCanvasAndPost(canvas);
@@ -100,7 +122,7 @@ public class IllustrationSurfaceView extends SurfaceView implements SurfaceHolde
 			if (!clipartExistsAtPos) {
 				addClipart(event);
 				
-				update();
+				updateCanvas();
 			} else {
 				selectClipart(event);
 			}
@@ -110,11 +132,13 @@ public class IllustrationSurfaceView extends SurfaceView implements SurfaceHolde
 		
 		if (eventAction == MotionEvent.ACTION_MOVE) {
 		
-			Log.i("ebook", "move " + (int) event.getX() + " / " + (int) event.getY());
+			if (mIsClipartSelected) {
+				moveSelectedClipart(event);
+			} else {
+				addBrushStroke(event);
+			}
 			
-			moveSelectedClipart(event);
-			
-			update();
+			updateCanvas();
 		}
 
 		if (eventAction == MotionEvent.ACTION_UP) {
@@ -122,9 +146,18 @@ public class IllustrationSurfaceView extends SurfaceView implements SurfaceHolde
 		}
 	}
 
+	private void addBrushStroke(MotionEvent event) {
+		int radius = 30;
+		int color = Color.CYAN;
+		Brush brushstroke = new Brush(getContext(), color, (int) event.getX(), (int) event.getY(), radius );
+		mBrushstrokeList.add(brushstroke);
+	}
+
 	private void addClipart(MotionEvent event) {
-		Clipart clipArt = new Clipart(this.getContext(), R.drawable.tree1, (int) event.getX(), (int) event.getY());
-		mClipartList.add(clipArt);
+		if (!TextUtils.isEmpty(mCurrentClipartFilePath)) {
+			Clipart clipArt = new Clipart(this.getContext(), mCurrentClipartFilePath, (int) event.getX(), (int) event.getY());
+			mClipartList.add(clipArt);
+		}
 	}
 
 	private void selectClipart(MotionEvent event) {
@@ -149,6 +182,14 @@ public class IllustrationSurfaceView extends SurfaceView implements SurfaceHolde
 				break;
 			}
 		}
+	}
+	
+	public void setCurrentClipart(String filePath) {
+		mCurrentClipartFilePath = filePath;
+	}
+
+	public void setClipartSelected(boolean clipartEnabled) {
+		mIsClipartSelected = clipartEnabled;
 	}
 
 }

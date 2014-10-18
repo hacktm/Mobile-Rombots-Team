@@ -21,6 +21,9 @@ public class MainActivity extends ActionBarActivity {
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		
 		fragmentTransaction.add(R.id.drawPage, new IlustrationFragment());
+		
+		fragmentTransaction.add(R.id.textPage, new TextFragment());
+		
 		fragmentTransaction.commit();
 	}
 	

@@ -1,8 +1,12 @@
 package com.rombotsteam.ebook;
 
+import java.io.InputStream;
+
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.text.TextUtils;
 import android.util.Log;
 
 public class Clipart {
@@ -13,15 +17,23 @@ public class Clipart {
 	public int mWidth;
 	public int mHeight;
 	
-	public String mName;
+	public String mFilePath;
 	
 	public Bitmap mBmp;
 	
 	public boolean mIsSelected = false;
 	
-	public Clipart(Context context, int resId, int posMouseX, int posMouseY) {
-		if (resId > 0) {
-			mBmp = BitmapFactory.decodeResource(context.getResources(), resId);
+	public Clipart(Context context, String resFilename, int posMouseX, int posMouseY) {
+		if (!TextUtils.isEmpty(resFilename)) {
+		    AssetManager assetManager = context.getAssets();
+		    
+		    InputStream is=null;
+		    try {
+		        is = assetManager.open(resFilename);
+		        mBmp = BitmapFactory.decodeStream(is);
+		    } catch (Exception e1) {  e1.printStackTrace();}	    
+		    
+		    mFilePath = resFilename;
 			
 			mWidth = mBmp.getWidth();
 			mHeight = mBmp.getHeight();
