@@ -53,8 +53,6 @@ public class Clipart {
 		int boundTop = mPosY;
 		int boundBottom = mPosY + mHeight;
 		
-		Log.i("ebook", "bounds " + boundLeft + " " + boundRight + " " + boundTop + " " + boundBottom);
-		
 		return (posMouseX >= boundLeft && posMouseX <= boundRight &&
 			posMouseY >= boundTop && posMouseY <= boundBottom);
 	}
@@ -62,9 +60,6 @@ public class Clipart {
 	public void setPos(int posMouseX, int posMouseY) {
 		mPosX = posMouseX - mWidth / 2;
 		mPosY = posMouseY - mHeight / 2;
-		
-		Log.i("ebook", "pos " + mPosX + " " + mPosY);
-
 	}
 	
 	public String toString() {

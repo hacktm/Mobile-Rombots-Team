@@ -1,11 +1,11 @@
 package com.rombotsteam.ebook;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -34,8 +34,11 @@ public class IllustrationSurfaceView extends SurfaceView implements SurfaceHolde
 	private String mCurrentClipartFilePath;
 	private boolean mIsClipartSelected;
 	
-	private int mCurrentBrushColor;
+	private int mCurrentBrushColor = Color.TRANSPARENT;
 	private boolean mIsEraserSelected;
+	
+	private Bitmap mBrushBitmap;
+	private Canvas mBrushCanvas;
 	
     public IllustrationSurfaceView(Context context, AttributeSet attSet) {
     	super(context, attSet);
@@ -59,22 +62,23 @@ public class IllustrationSurfaceView extends SurfaceView implements SurfaceHolde
 
 		});
 	    
+	    
+	    mBrushBitmap = Bitmap.createBitmap(holder.getSurfaceFrame().width(), holder.getSurfaceFrame().height(), Bitmap.Config.ARGB_8888);
+        mBrushCanvas = new Canvas(mBrushBitmap);
+	    
 	    updateCanvas();
 	}
 	  
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+		
+		mBrushBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        mBrushCanvas = new Canvas(mBrushBitmap);
+		
 	}
 
 	public void surfaceDestroyed(SurfaceHolder holder) {
 	}
 	
-	public void updateCanvasColor() {
-		Canvas canvas  = sh.lockCanvas();
-		
-		canvas.drawColor(Color.BLUE);
-				
-		sh.unlockCanvasAndPost(canvas);
-	}
 	
 	private void updateCanvas() {
 		Canvas canvas  = sh.lockCanvas();
@@ -95,7 +99,6 @@ public class IllustrationSurfaceView extends SurfaceView implements SurfaceHolde
 		
 		paint = new Paint();
 		paint.setXfermode(new PorterDuffXfermode(Mode.MULTIPLY));
-		
 		
 		for (Brush brushStroke : mBrushstrokeList) {
 			paint.setColor(brushStroke.mColor);
@@ -129,7 +132,6 @@ public class IllustrationSurfaceView extends SurfaceView implements SurfaceHolde
 				}
 			}
 			
-			Log.i("ebook", "down");
 		}
 		
 		if (eventAction == MotionEvent.ACTION_MOVE) {
@@ -137,7 +139,11 @@ public class IllustrationSurfaceView extends SurfaceView implements SurfaceHolde
 			if (mIsClipartSelected) {
 				moveSelectedClipart(event);
 			} else {
-				addBrushStroke(event);
+				if (mCurrentBrushColor != Color.TRANSPARENT) {
+					addBrushStroke(event);
+				} else {
+					eraseBrushStrokes(event);
+				}
 			}
 			
 			updateCanvas();
@@ -148,10 +154,19 @@ public class IllustrationSurfaceView extends SurfaceView implements SurfaceHolde
 		}
 	}
 
+	private void eraseBrushStrokes(MotionEvent event) {
+		Iterator<Brush> it = mBrushstrokeList.iterator();
+		while (it.hasNext()) {
+			Brush brushStroke = it.next();
+			if (brushStroke.isInBounds((int) event.getX(), (int) event.getY())) {
+				it.remove();
+			}
+		}
+	}
+
 	private void addBrushStroke(MotionEvent event) {
 		int radius = 30;
-		int color = Color.CYAN;
-		Brush brushstroke = new Brush(getContext(), color, (int) event.getX(), (int) event.getY(), radius );
+		Brush brushstroke = new Brush(getContext(), mCurrentBrushColor, (int) event.getX(), (int) event.getY(), radius );
 		mBrushstrokeList.add(brushstroke);
 	}
 
@@ -192,6 +207,10 @@ public class IllustrationSurfaceView extends SurfaceView implements SurfaceHolde
 
 	public void setClipartSelected(boolean clipartEnabled) {
 		mIsClipartSelected = clipartEnabled;
+	}
+
+	public void setCurrentBrushColor(int color) {
+		mCurrentBrushColor = color;
 	}
 
 }

@@ -20,4 +20,14 @@ public class Brush {
 		mColor = color;
 	}
 	
+	public boolean isInBounds(int posMouseX, int posMouseY) {
+		int boundLeft = mPosX - mRadius;
+		int boundRight = mPosX + mRadius;
+		int boundTop = mPosY - mRadius;
+		int boundBottom = mPosY + mRadius;
+		
+		return (posMouseX >= boundLeft && posMouseX <= boundRight &&
+			posMouseY >= boundTop && posMouseY <= boundBottom);
+	}
+	
 }

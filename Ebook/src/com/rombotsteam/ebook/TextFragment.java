@@ -1,8 +1,5 @@
 package com.rombotsteam.ebook;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.InputStream;
 import java.util.ArrayList;
 
@@ -77,14 +74,25 @@ public class TextFragment extends Fragment {
 	    ArrayList<String> pages = PageUtil.getPages(text);
 	    
 	    int pageIdx = 0;
-		String pageText = pages.get(pageIdx);
+		final String pageText = pages.get(pageIdx);
 		
 	    firstLetter = ""+ pageText.charAt(0);
 	    setInitialImg(firstLetter);	    
 
 		
-		pageText = "        " + pageText.substring(1);
-	    mPageText.setText(pageText);
+		String pageTextWithSpace = "        " + pageText.substring(1);
+	    mPageText.setText(pageTextWithSpace);
+	    
+	    //test
+	    /*Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+			    BackendHttpClient client = new BackendHttpClient();
+			    client.postPage(pageText);
+			}    	
+	    });
+	    t.start();*/
+	    //test
 	}
 
 	private void setInitialImg(String firstLetter) {

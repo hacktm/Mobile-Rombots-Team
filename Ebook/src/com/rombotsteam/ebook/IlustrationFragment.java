@@ -3,6 +3,7 @@ package com.rombotsteam.ebook;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 public class IlustrationFragment extends Fragment {
 
@@ -24,10 +26,25 @@ public class IlustrationFragment extends Fragment {
 	private GridView mClipartGrid;
 	private ImageButton mShowBushListButton;
 
+	private View mColorsLayout;
+	private ImageView mColorYellowImage;
+	private ImageView mColorRedImage;
 	
 	private ClipartGridAdapter mAdapter;
 
 	private List<Clipart> mClipartList;
+
+
+	private View mColorOrangeImage;
+
+
+	private View mColorCyanImage;
+
+
+	private View mColorGreenImage;
+
+
+	private View mColorMagentaImage;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,13 +92,87 @@ public class IlustrationFragment extends Fragment {
 			}
 		});
 		
+		mColorsLayout = getView().findViewById(R.id.layoutColors);
+		mColorsLayout.setVisibility(View.INVISIBLE);
+		
 		mShowBushListButton = (ImageButton) getView().findViewById(R.id.button2);
 		mShowBushListButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mPageSurface.setClipartSelected(false);	
+				
+				if (mColorsLayout.getVisibility() == View.VISIBLE) {
+					mColorsLayout.setVisibility(View.INVISIBLE);
+					// erase brush selected
+					mPageSurface.setClipartSelected(false);
+					mPageSurface.setCurrentBrushColor(Color.TRANSPARENT);
+				} else {
+					mColorsLayout.setVisibility(View.VISIBLE);
+				}
 			}
 		});
+		
+		
+		mColorYellowImage = (ImageView) getView().findViewById(R.id.imageYellow);
+		mColorYellowImage.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mPageSurface.setClipartSelected(false);
+				mColorsLayout.setVisibility(View.INVISIBLE);
+				mPageSurface.setCurrentBrushColor(Color.rgb(255,242,0));
+			}
+		});
+		
+		mColorOrangeImage = (ImageView) getView().findViewById(R.id.imageOrange);
+		mColorOrangeImage.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mPageSurface.setClipartSelected(false);
+				mColorsLayout.setVisibility(View.INVISIBLE);
+				mPageSurface.setCurrentBrushColor(Color.rgb(247,0,0));				
+			}
+		});
+		
+		mColorRedImage = (ImageView) getView().findViewById(R.id.imageRed);
+		mColorRedImage.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mPageSurface.setClipartSelected(false);
+				mColorsLayout.setVisibility(View.INVISIBLE);
+				mPageSurface.setCurrentBrushColor(Color.rgb(218,28,92));
+			}
+		});
+		
+		mColorCyanImage = (ImageView) getView().findViewById(R.id.imageCyan);
+		mColorCyanImage.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mPageSurface.setClipartSelected(false);
+				mColorsLayout.setVisibility(View.INVISIBLE);
+				mPageSurface.setCurrentBrushColor(Color.rgb(39,170,225));
+			}
+		});
+		
+		mColorGreenImage = (ImageView) getView().findViewById(R.id.imageGreen);
+		mColorGreenImage.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mPageSurface.setClipartSelected(false);
+				mColorsLayout.setVisibility(View.INVISIBLE);
+				mPageSurface.setCurrentBrushColor(Color.rgb(57,181,74));
+			}
+		});
+		
+		mColorMagentaImage = (ImageView) getView().findViewById(R.id.imageMagenta);
+		mColorMagentaImage.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mPageSurface.setClipartSelected(false);
+				mColorsLayout.setVisibility(View.INVISIBLE);
+				mPageSurface.setCurrentBrushColor(Color.rgb(146,39,143));
+			}
+		});
+		
+		
 	}
 	
 	private void initClipartList() {
