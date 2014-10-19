@@ -1,13 +1,11 @@
 package com.rombotsteam.ebook;
 
-import java.util.ArrayList;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 
 public class BookActivity extends ActionBarActivity implements IPageSwitchListener {
 
@@ -32,14 +30,6 @@ public class BookActivity extends ActionBarActivity implements IPageSwitchListen
 		initFragment();
 		
 		initWordsImagesDictionary(WORDS_IMG_DICT_FILE);
-		
-		//TEST
-		String filenam = WordsImageDictionaryUtil.getImageFilenameForWord("wolf");
-		
-		ArrayList<String> files = FileUtil.getFilesMatchingName(this, "clipart", "flower");
-		for (String f : files) {
-			Log.i("ebook", "img: " + f);
-		}
 	}
 
 	private void initFragment() {
@@ -54,6 +44,7 @@ public class BookActivity extends ActionBarActivity implements IPageSwitchListen
 		TextFragment textFrag = new TextFragment();
 		mPageSwitchListener = textFrag;
 		textFrag.setEbookFile(mFilePath, mIsFileFromAssets);
+		textFrag.setBackendRespListener(ilustrFrag);
 		fragmentTransaction.add(R.id.textPage, textFrag);
 		
 		fragmentTransaction.commit();
@@ -77,5 +68,6 @@ public class BookActivity extends ActionBarActivity implements IPageSwitchListen
 		String jsonContent = FileUtil.getFileContents(this, wordsImgDictFilePath, true);
 		WordsImageDictionaryUtil.createWordsImageDict(jsonContent);
 	}
+
 	
 }

@@ -41,8 +41,12 @@ public class BackendHttpClient {
 			urlConnection.setDoOutput(true);
 		    urlConnection.setChunkedStreamingMode(0);
 		    
+		    Log.i("ebook", "start connection to GAE");
+		    
 		    OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
 		    post(out, pageText);
+		    
+		    Log.i("ebook", "upload to GAE complete. reading..");
 
 		    InputStream in = new BufferedInputStream(urlConnection.getInputStream());
 		    respJson = readStream(in);

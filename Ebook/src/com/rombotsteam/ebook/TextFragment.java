@@ -1,6 +1,5 @@
 package com.rombotsteam.ebook;
 
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -39,10 +38,10 @@ public class TextFragment extends Fragment implements IPageSwitchListener {
 	
 	private TextToSpeech mTTS;
 	private String mCurrentPageText = "";
-	private boolean mIsTTSPlaying = false;
 	
 	private String mFilePath = "";
 	private boolean mIsBookFromAssets = true;
+	private IBackendRespListener mBackendRespListener;
 
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -118,10 +117,15 @@ public class TextFragment extends Fragment implements IPageSwitchListener {
 			@Override
 			public void run() {
 			    BackendHttpClient client = new BackendHttpClient();
-			    client.postPage(pageText);
+			    String jsonResp = client.postPage(pageText);
+			    notifyOnBackendResp(jsonResp);
 			}    	
 	    });
 	    t.start();
+	}
+
+	protected void notifyOnBackendResp(String jsonResp) {
+		mBackendRespListener.onWordsJSONRecv(jsonResp);
 	}
 
 	private void setInitialImg(String firstLetter) {
@@ -171,7 +175,6 @@ public class TextFragment extends Fragment implements IPageSwitchListener {
 	}
 	
 	private void enableTTS(final String pageText, boolean enable) {
-		mIsTTSPlaying = enable;
 		if (enable) {
 			mTTS.speak(pageText, TextToSpeech.QUEUE_FLUSH, null);
 		} else {
@@ -184,6 +187,10 @@ public class TextFragment extends Fragment implements IPageSwitchListener {
 	public void setEbookFile(String filePath, boolean isBookFromAssets) {
 		mFilePath = filePath;
 		mIsBookFromAssets = isBookFromAssets;
+	}
+
+	public void setBackendRespListener(IBackendRespListener listener) {
+		mBackendRespListener = listener;
 	}
 	
 }

@@ -6,12 +6,15 @@ import java.util.List;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.textservice.TextInfo;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -19,9 +22,12 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-public class IlustrationFragment extends Fragment {
+public class IlustrationFragment extends Fragment implements IBackendRespListener {
 
 	protected static final int COLOR_ALPHA_VALUE = 100;
+
+
+	private static final String CLIPART_ASSETS_FOLDER = "clipart";
 
 
 	private IllustrationSurfaceView mPageSurface;
@@ -280,5 +286,61 @@ public class IlustrationFragment extends Fragment {
 		clearCanvas();
 	}
 
+	@Override
+	public void onWordsJSONRecv(String jsonResp) {
+		Log.d("ebook", "from backend\n"+jsonResp);
+		
+		ArrayList<String> wordsFromGAE = WordsImageDictionaryUtil.getWordsFromJSONResp(jsonResp);
+		
+		initClipartList(wordsFromGAE);
+		
+	}
+
+	private void initClipartList(ArrayList<String> wordsFromGAE) {
+		if (mClipartList == null) {
+			mClipartList = new ArrayList<Clipart>();
+		}
+		
+		LoadClipartsTask clipartLoadingTask = new LoadClipartsTask(wordsFromGAE);
+		clipartLoadingTask.execute();		
+	}
+	
+	private class LoadClipartsTask extends AsyncTask<Void, Integer, Boolean> {
+		 
+		private List<Clipart> mCliparts;
+		private ArrayList<String> mWordList;
+
+		public LoadClipartsTask(ArrayList<String> wordList) {
+			mWordList  =wordList;			
+		}
+
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			mCliparts = new ArrayList<Clipart>();
+			for (String word : mWordList) {
+				String filename = WordsImageDictionaryUtil.getImageFilenameForWord(word);
+
+				if (!TextUtils.isEmpty(filename)) {
+					ArrayList<String> files = FileUtil.getFilesMatchingName(getActivity(), CLIPART_ASSETS_FOLDER, filename);
+					for (String f : files) {
+						//Log.i("ebook", "img: " + f);
+						
+						Clipart clipArt = new Clipart(getActivity(), f, 0, 0);		
+						mCliparts.add(clipArt);
+					}
+				}
+			}
+			
+			return true;
+		}
+		
+		@Override
+		public void onPostExecute(Boolean result) {
+			mClipartList.clear();
+			mClipartList.addAll(mCliparts);
+			mAdapter.notifyDataSetChanged();
+		}
+		
+	}
 	
 }

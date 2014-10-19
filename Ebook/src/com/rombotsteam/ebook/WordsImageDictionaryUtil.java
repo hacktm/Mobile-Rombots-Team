@@ -24,9 +24,9 @@ public class WordsImageDictionaryUtil {
 			Random rand = new Random(System.currentTimeMillis());
 			int randIdx = rand.nextInt(imgFileList.size());
 			
-			for (String imgFilename : imgFileList) {
+			/*for (String imgFilename : imgFileList) {
 				Log.e("ebook", "Word " + word + " file " + imgFilename);
-			}
+			}*/
 			
 			filename = imgFileList.get(randIdx);
 		}
@@ -61,6 +61,31 @@ public class WordsImageDictionaryUtil {
 		
 		imgFileList.add(image);
 		mWordsDict.put(word, imgFileList);
+	}
+	
+	@SuppressWarnings("unchecked")
+	static public ArrayList<String> getWordsFromJSONResp(String jsonResp) {
+		ArrayList<String> wordList = new ArrayList<String>();
+		
+		try {
+			JSONArray jsonArray = new JSONArray(jsonResp);
+			
+			JSONObject jsonObj = (JSONObject) jsonArray.get(0);
+			Iterator<String> it = jsonObj.keys();
+			while (it.hasNext()) {
+				String key = it.next();			
+				JSONArray words = jsonObj.getJSONArray(key);
+				for (int i=0 ; i< words.length(); i++) {
+					String word = words.getString(i);
+					wordList.add(word);
+				}				
+			}
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		return wordList;
 	}
 	
 }

@@ -1,8 +1,6 @@
 package com.rombotsteam.ebook;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -63,7 +61,8 @@ public class FileUtil {
 			
 			if(files != null) {
 				for (String file : files) {
-					if (file.contains(matchStr)) {
+					if (file.toLowerCase().contains(matchStr.toLowerCase())) {
+						Log.i("ebook", "FILE " + file + " matched " + matchStr);
 						matchingFileList.add(subDir+"/"+file);
 					}
 				}
