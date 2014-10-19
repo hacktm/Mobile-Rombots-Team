@@ -94,48 +94,11 @@ public class TextFragment extends Fragment implements IPageSwitchListener {
 	}
 
 	private void loadTextFromFile(String fileName, boolean isBookFromAssets) {
-		String text = "";
-		
-		if (isBookFromAssets) {
-			Log.d("ebook", "open ebook from assets: " + fileName);
-			
-			AssetManager assetManager = getActivity().getAssets();
-		    
-		    InputStream is=null;
-		    try {
-		        is = assetManager.open(fileName);
-		       
-		        int MAX_BUFFER = 1024;
-		        byte[] buffer = new byte[MAX_BUFFER];
-	
-		        while (is.read(buffer) > 0) {
-		        	text = text + new String(buffer, "utf-8");
-		        }
-		        
-		    } catch (Exception e1) {  e1.printStackTrace();}
-	    
-		} else {
-			Log.d("ebook", "open ebook from file: " + fileName);
-		    try {
-		    	FileInputStream fs = new FileInputStream(fileName);
-		    	
-		        int MAX_BUFFER = 1024;
-		        byte[] buffer = new byte[MAX_BUFFER];
-	
-		        while (fs.read(buffer) > 0) {
-		        	text = text + new String(buffer, "utf-8");
-		        }
-		        
-		        fs.close();
-		        
-		    } catch (Exception e1) {  e1.printStackTrace();}
-	    
-		}
+		String text = FileUtil.getFileContents(getActivity(), fileName, isBookFromAssets);	
 	    
 	    mPages = PageUtil.getPages(text);
 	    
 		setPage();
-	    
 	}
 
 	private void setPage() {

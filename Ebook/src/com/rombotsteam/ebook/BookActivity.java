@@ -1,15 +1,19 @@
 package com.rombotsteam.ebook;
 
+import java.util.ArrayList;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 
 public class BookActivity extends ActionBarActivity implements IPageSwitchListener {
 
 	public static final String INTENT_BOOK_FROM_ASSETS = "INTENT_BOOK_FROM_ASSETS";
 	public static final String INTENT_BOOK_FILE_PATH = "INTENT_BOOK_FILE_PATH";
+	private static final String WORDS_IMG_DICT_FILE = "words_img.json";
 	
 	private IPageSwitchListener mPageSwitchListener;
 	
@@ -26,8 +30,17 @@ public class BookActivity extends ActionBarActivity implements IPageSwitchListen
 		mIsFileFromAssets = i.getBooleanExtra(INTENT_BOOK_FROM_ASSETS, true);
 
 		initFragment();
+		
+		initWordsImagesDictionary(WORDS_IMG_DICT_FILE);
+		
+		//TEST
+		String filenam = WordsImageDictionaryUtil.getImageFilenameForWord("wolf");
+		
+		ArrayList<String> files = FileUtil.getFilesMatchingName(this, "clipart", "flower");
+		for (String f : files) {
+			Log.i("ebook", "img: " + f);
+		}
 	}
-
 
 	private void initFragment() {
 		
@@ -58,6 +71,11 @@ public class BookActivity extends ActionBarActivity implements IPageSwitchListen
 		if (mPageSwitchListener != null) {
 			mPageSwitchListener.onPrevPage();
 		}
+	}
+	
+	private void initWordsImagesDictionary(String wordsImgDictFilePath) {
+		String jsonContent = FileUtil.getFileContents(this, wordsImgDictFilePath, true);
+		WordsImageDictionaryUtil.createWordsImageDict(jsonContent);
 	}
 	
 }
