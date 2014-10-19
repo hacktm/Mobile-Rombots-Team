@@ -35,6 +35,7 @@ public class TextFragment extends Fragment implements IPageSwitchListener {
 	
 	private TextToSpeech mTTS;
 	private String mCurrentPageText = "";
+	private boolean mIsTTSPlaying = false;
 
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,6 +48,8 @@ public class TextFragment extends Fragment implements IPageSwitchListener {
 		super.onActivityCreated(savedInstanceState);
 
 		setupControls();
+		
+		initTTS();
 	}
 
 	private void setupControls() {
@@ -73,8 +76,7 @@ public class TextFragment extends Fragment implements IPageSwitchListener {
 		mEnableTTSBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startTTS(mCurrentPageText);
-				//TODO: stop TTS on btn click again
+				enableTTS(mCurrentPageText, !mIsTTSPlaying);				
 			}
 		});
 	}
@@ -161,14 +163,31 @@ public class TextFragment extends Fragment implements IPageSwitchListener {
 		}
 	}
 	
-	private void startTTS(final String pageText) {
-		mTTS = new TextToSpeech(getActivity(), new TextToSpeech.OnInitListener() {
-		   @Override
-		   public void onInit(int status) {
-			   mTTS.setLanguage(Locale.UK);
-			   mTTS.speak(pageText, TextToSpeech.QUEUE_FLUSH, null);
-		   }
+	private void initTTS() {
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				mTTS = new TextToSpeech(getActivity(), new TextToSpeech.OnInitListener() {
+					   @Override
+					   public void onInit(int status) {
+						   mTTS.setLanguage(Locale.UK);
+						   Log.i("ebook", "TTS init done");
+					   }
+					});
+			}
 		});
+		t.start();
+	}
+	
+	private void enableTTS(final String pageText, boolean enable) {
+		mIsTTSPlaying = enable;
+		if (enable) {
+			mTTS.speak(pageText, TextToSpeech.QUEUE_FLUSH, null);
+		} else {
+			if (mTTS.isSpeaking()) {
+				mTTS.stop();
+			}
+		}
 	}
 	
 }

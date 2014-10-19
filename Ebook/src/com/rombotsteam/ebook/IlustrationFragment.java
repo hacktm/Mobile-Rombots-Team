@@ -47,6 +47,7 @@ public class IlustrationFragment extends Fragment {
 	private View mColorGreenImage;
 	private View mColorMagentaImage;
 
+	private ImageButton mSaveImageBtn;
 
 	private IPageSwitchListener mPageSwitchListener;
 	
@@ -197,6 +198,14 @@ public class IlustrationFragment extends Fragment {
 				onNextPage();
 			}
 		});
+		
+		mSaveImageBtn = (ImageButton) getView().findViewById(R.id.buttonSave);
+		mSaveImageBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				ExportIllustrationUtil.saveImage(mPageSurface.getContent());
+			}
+		});
 	}
 	
 	protected void clearCanvas() {
@@ -268,7 +277,6 @@ public class IlustrationFragment extends Fragment {
 	private void onNextPage() {
 		notifyNextPage();
 		
-		ExportIllustrationUtil.saveImage(mPageSurface.getContent());
 		clearCanvas();
 	}
 

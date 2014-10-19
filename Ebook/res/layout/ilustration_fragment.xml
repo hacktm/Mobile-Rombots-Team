@@ -107,5 +107,15 @@
         android:scaleType="fitXY"
         android:src="@drawable/next"
         android:background="@android:color/transparent"  />
+    
+    <ImageButton
+        android:id="@+id/buttonSave"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/doodles"
+        android:background="@android:color/transparent"  />
 
 </RelativeLayout>
