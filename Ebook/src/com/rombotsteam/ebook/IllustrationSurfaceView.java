@@ -22,6 +22,7 @@ import android.view.View;
 
 public class IllustrationSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 
+	private static final int BRUSH_DEFAULT_SIZE = 20;
 	private SurfaceHolder sh;
 	private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	  
@@ -42,7 +43,7 @@ public class IllustrationSurfaceView extends SurfaceView implements SurfaceHolde
 	    sh = getHolder();
 	    sh.addCallback(this);
 	    
-	    mBackgroudBmp = BitmapFactory.decodeResource(getResources(), R.drawable.backgroundb);
+	    mBackgroudBmp = BitmapFactory.decodeResource(getResources(), R.drawable.background);
 	}
 	  
 	public void surfaceCreated(SurfaceHolder holder) {
@@ -167,7 +168,7 @@ public class IllustrationSurfaceView extends SurfaceView implements SurfaceHolde
 	}
 
 	private void addBrushStroke(MotionEvent event) {
-		int radius = 30;
+		int radius = BRUSH_DEFAULT_SIZE;
 		Brush brushstroke = new Brush(getContext(), mCurrentBrushColor, (int) event.getX(), (int) event.getY(), radius );
 		mBrushstrokeList.add(brushstroke);
 	}

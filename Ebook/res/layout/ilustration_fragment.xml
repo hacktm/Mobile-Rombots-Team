@@ -115,7 +115,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:scaleType="fitXY"
-        android:src="@drawable/doodles"
-        android:background="@android:color/transparent"  />
+        android:src="@drawable/save_on"
+        android:background="@android:color/transparent"
+         />
 
 </RelativeLayout>

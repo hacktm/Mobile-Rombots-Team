@@ -7,9 +7,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 
-public class MainMenuActivity extends Activity {
+public class MainMenuActivity extends Activity implements IFileChooserListener {
 
+	protected static final String RRH_ASSET_FILENAME = "red_riding_hood.txt";
+	protected static final String GOLDIELOCKS_ASSET_FILENAME = "goldielocks.txt";
 	private ImageButton mOpenBookBtn;
+	private ImageButton mOpenRRHBtn;
+	private ImageButton mOpenGoldielocksBtn;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,14 +30,42 @@ public class MainMenuActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				startBookActivity();
+				FileChooserDialog fileDlg = new FileChooserDialog();
+				fileDlg.showFileChooserDialog(MainMenuActivity.this, MainMenuActivity.this);
 			}
 		});
+		
+		mOpenRRHBtn = (ImageButton) findViewById(R.id.buttonOpenRedRidingHoodBook);
+		mOpenRRHBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				startBookActivity(RRH_ASSET_FILENAME, true);
+			}
+		});
+		
+		mOpenGoldielocksBtn = (ImageButton) findViewById(R.id.buttonOpenGoldielocksBook);
+		mOpenGoldielocksBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				startBookActivity(GOLDIELOCKS_ASSET_FILENAME, true);
+			}
+		});
+		
 	}
 
-	protected void startBookActivity() {
-		Intent i = new Intent(this, MainActivity.class);
+	protected void startBookActivity(String filePath, boolean isBookFromAssets) {
+		Intent i = new Intent(this, BookActivity.class);
+		i.putExtra(BookActivity.INTENT_BOOK_FILE_PATH, filePath);
+		i.putExtra(BookActivity.INTENT_BOOK_FROM_ASSETS, isBookFromAssets);
+		
 		startActivity(i);
+	}
+
+	@Override
+	public void onFileChosen(String filePath) {
+		startBookActivity(filePath, false);
 	}
 
 	

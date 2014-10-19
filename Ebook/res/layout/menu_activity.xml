@@ -16,14 +16,38 @@
 
     <ImageButton
         android:id="@+id/buttonOpenBook"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="150dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="120dp"
         android:layout_marginLeft="120dp"
         android:background="@android:color/transparent"
-        android:scaleType="centerInside"
+        android:scaleType="fitXY"
         android:src="@drawable/open_book" />
+    
+     <ImageButton
+        android:id="@+id/buttonOpenRedRidingHoodBook"
+        android:layout_width="100dp"
+        android:layout_height="150dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="120dp"
+        android:layout_marginLeft="320dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerInside"
+        android:src="@drawable/red_cover" />
 
+     <ImageButton
+        android:id="@+id/buttonOpenGoldielocksBook"
+        android:layout_width="100dp"
+        android:layout_height="150dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="120dp"
+        android:layout_marginLeft="520dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerInside"
+        android:src="@drawable/goldielocks_cover" />
+     
 </RelativeLayout>

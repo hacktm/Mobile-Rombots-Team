@@ -15,8 +15,8 @@
     		
 		    <ImageView 
 		        android:id="@+id/imageInitial"
-		        android:layout_width="80dp"
-		        android:layout_height="80dp"
+		        android:layout_width="120dp"
+		        android:layout_height="120dp"
 		        android:layout_alignParentLeft="true"
 		        android:layout_alignParentTop="true"
 		        android:paddingLeft="10dp"
@@ -28,8 +28,10 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_marginLeft="50dp"
-		        android:layout_marginTop="50dp"
-		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:layout_marginRight="50dp"
+		        android:layout_marginTop="90dp"
+		        android:lineSpacingMultiplier="1.5"		        
+		        android:textAppearance="?android:attr/textAppearanceMedium"
 		        android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
 		        />
 	    
@@ -47,13 +49,16 @@
 	        android:background="@android:color/transparent"
 	        android:src="@drawable/prev" />
 
-	    <ImageButton
+	    <ToggleButton
 	        android:id="@+id/buttonTTS"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
+	        android:layout_width="60dp"
+	        android:layout_height="60dp"
 	        android:layout_alignParentBottom="true"
 	        android:layout_centerHorizontal="true"	        
-	        android:src="@drawable/crayon_btn"
-	        android:background="@android:color/transparent" />
+	        android:background="@drawable/tts_btn"
+        	android:textOn=""
+        	android:textOff="" />
+	    
+	    
 
 </RelativeLayout >

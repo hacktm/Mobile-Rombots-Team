@@ -1,5 +1,6 @@
 package com.rombotsteam.ebook;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -16,9 +17,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 public class TextFragment extends Fragment implements IPageSwitchListener {
 	
@@ -31,11 +35,14 @@ public class TextFragment extends Fragment implements IPageSwitchListener {
 	
 	private ImageButton mPrevPageBtn;
 	
-	private ImageButton mEnableTTSBtn;
+	private ToggleButton mEnableTTSBtn;
 	
 	private TextToSpeech mTTS;
 	private String mCurrentPageText = "";
 	private boolean mIsTTSPlaying = false;
+	
+	private String mFilePath = "";
+	private boolean mIsBookFromAssets = true;
 
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,7 +66,7 @@ public class TextFragment extends Fragment implements IPageSwitchListener {
 		
 		mCurrentPageIdx = 0;
 		
-		loadTextFromFile("red_riding_hood.txt");
+		loadTextFromFile(mFilePath, mIsBookFromAssets);
 		
 		setFont("droidserif.ttf");
 		
@@ -71,12 +78,12 @@ public class TextFragment extends Fragment implements IPageSwitchListener {
 			}
 		});
 		
-		mEnableTTSBtn = (ImageButton) getView().findViewById(R.id.buttonTTS);
+		mEnableTTSBtn = (ToggleButton) getView().findViewById(R.id.buttonTTS);
 		
-		mEnableTTSBtn.setOnClickListener(new OnClickListener() {
+		mEnableTTSBtn.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
-			public void onClick(View v) {
-				enableTTS(mCurrentPageText, !mIsTTSPlaying);				
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				enableTTS(mCurrentPageText, isChecked);
 			}
 		});
 	}
@@ -86,23 +93,44 @@ public class TextFragment extends Fragment implements IPageSwitchListener {
 		mPageText.setTypeface(myTypeface);
 	}
 
-	private void loadTextFromFile(String fileName) {
-		AssetManager assetManager = getActivity().getAssets();
-	    
+	private void loadTextFromFile(String fileName, boolean isBookFromAssets) {
 		String text = "";
 		
-	    InputStream is=null;
-	    try {
-	        is = assetManager.open(fileName);
-	       
-	        int MAX_BUFFER = 1024;
-	        byte[] buffer = new byte[MAX_BUFFER];
-
-	        while (is.read(buffer) > 0) {
-	        	text = text + new String(buffer, "utf-8");
-	        }
-	        
-	    } catch (Exception e1) {  e1.printStackTrace();}
+		if (isBookFromAssets) {
+			Log.d("ebook", "open ebook from assets: " + fileName);
+			
+			AssetManager assetManager = getActivity().getAssets();
+		    
+		    InputStream is=null;
+		    try {
+		        is = assetManager.open(fileName);
+		       
+		        int MAX_BUFFER = 1024;
+		        byte[] buffer = new byte[MAX_BUFFER];
+	
+		        while (is.read(buffer) > 0) {
+		        	text = text + new String(buffer, "utf-8");
+		        }
+		        
+		    } catch (Exception e1) {  e1.printStackTrace();}
+	    
+		} else {
+			Log.d("ebook", "open ebook from file: " + fileName);
+		    try {
+		    	FileInputStream fs = new FileInputStream(fileName);
+		    	
+		        int MAX_BUFFER = 1024;
+		        byte[] buffer = new byte[MAX_BUFFER];
+	
+		        while (fs.read(buffer) > 0) {
+		        	text = text + new String(buffer, "utf-8");
+		        }
+		        
+		        fs.close();
+		        
+		    } catch (Exception e1) {  e1.printStackTrace();}
+	    
+		}
 	    
 	    mPages = PageUtil.getPages(text);
 	    
@@ -116,7 +144,7 @@ public class TextFragment extends Fragment implements IPageSwitchListener {
 	    String firstLetter = ""+ mCurrentPageText.charAt(0);
 	    setInitialImg(firstLetter);	    
 
-		String pageTextWithSpace = "      " + mCurrentPageText.substring(1);
+		String pageTextWithSpace = "               " + mCurrentPageText.substring(1);
 	    mPageText.setText(pageTextWithSpace);
 	    
 	    getWordsFromBackend(mCurrentPageText );
@@ -188,6 +216,11 @@ public class TextFragment extends Fragment implements IPageSwitchListener {
 				mTTS.stop();
 			}
 		}
+	}
+	
+	public void setEbookFile(String filePath, boolean isBookFromAssets) {
+		mFilePath = filePath;
+		mIsBookFromAssets = isBookFromAssets;
 	}
 	
 }

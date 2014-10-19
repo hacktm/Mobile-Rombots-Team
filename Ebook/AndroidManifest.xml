@@ -18,7 +18,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.rombotsteam.ebook.MainActivity"
+            android:name="com.rombotsteam.ebook.MainMenuActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +28,7 @@
         </activity>
         
         <activity
-            android:name="com.rombotsteam.ebook.MainMenuActivity"
+            android:name="com.rombotsteam.ebook.BookActivity"
             android:label="@string/app_name" >
         </activity>
         
