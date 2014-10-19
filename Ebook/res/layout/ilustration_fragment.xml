@@ -17,6 +17,7 @@
         android:layout_height="60dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
         android:scaleType="fitXY"
         android:src="@drawable/doodles"
         android:background="@android:color/transparent" />
@@ -25,7 +26,8 @@
         android:id="@+id/button2"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:scaleType="fitXY"
+        android:scaleType="fitXY"     
+        android:layout_marginTop="5dp"   
         android:layout_alignParentRight="true"        
         android:layout_below="@+id/button1"
         android:src="@drawable/crayon_btn"
@@ -37,6 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/button1"
         android:layout_toLeftOf="@+id/button2"
+        
         android:orientation="horizontal"
         android:background="@drawable/crayon"
          >
@@ -89,10 +92,12 @@
 
     <GridView
         android:id="@+id/gridView1"
-        android:layout_width="600dp"
+        android:layout_width="500dp"
         android:layout_height="wrap_content"
+        android:padding="40dp"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/button1"
+        android:layout_marginTop="20dp"
         android:background="@drawable/doodlesbox"
         android:numColumns="3"
         android:visibility="invisible" >
@@ -104,6 +109,7 @@
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
         android:scaleType="fitXY"
         android:src="@drawable/next"
         android:background="@android:color/transparent"  />

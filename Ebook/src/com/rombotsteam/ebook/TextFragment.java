@@ -106,7 +106,7 @@ public class TextFragment extends Fragment implements IPageSwitchListener {
 	    String firstLetter = ""+ mCurrentPageText.charAt(0);
 	    setInitialImg(firstLetter);	    
 
-		String pageTextWithSpace = "               " + mCurrentPageText.substring(1);
+		String pageTextWithSpace = "                                   " + mCurrentPageText.substring(1);
 	    mPageText.setText(pageTextWithSpace);
 	    
 	    getWordsFromBackend(mCurrentPageText );
