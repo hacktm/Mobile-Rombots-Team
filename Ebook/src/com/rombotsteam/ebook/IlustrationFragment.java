@@ -18,9 +18,11 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 
 public class IlustrationFragment extends Fragment {
+
+	protected static final int COLOR_ALPHA_VALUE = 100;
+
 
 	private IllustrationSurfaceView mPageSurface;
 
@@ -116,6 +118,7 @@ public class IlustrationFragment extends Fragment {
 					mColorsLayout.setVisibility(View.INVISIBLE);
 					setEraserBrush();
 				} else {
+					resetBrushBtnImage();
 					mColorsLayout.setVisibility(View.VISIBLE);
 					mClipartGrid.setVisibility(View.INVISIBLE);
 				}
@@ -127,7 +130,7 @@ public class IlustrationFragment extends Fragment {
 		mColorYellowImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				selectBrushColor(Color.rgb(255,255,0));
+				selectBrushColor(Color.argb(COLOR_ALPHA_VALUE, 255,255,0));
 				
 				setBrushBtnImage(v);
 			}
@@ -137,7 +140,7 @@ public class IlustrationFragment extends Fragment {
 		mColorOrangeImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {				
-				selectBrushColor(Color.rgb(247,0,0));
+				selectBrushColor(Color.argb(COLOR_ALPHA_VALUE, 247,0,0));
 				
 				setBrushBtnImage(v);
 			}
@@ -147,7 +150,7 @@ public class IlustrationFragment extends Fragment {
 		mColorRedImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				selectBrushColor(Color.rgb(218,28,92));
+				selectBrushColor(Color.argb(COLOR_ALPHA_VALUE, 218,28,92));
 				
 				setBrushBtnImage(v);
 			}
@@ -159,7 +162,7 @@ public class IlustrationFragment extends Fragment {
 			public void onClick(View v) {
 				//selectBrushColor(Color.rgb(39,170,225));
 				
-				selectBrushColor(Color.rgb(39,250,255));
+				selectBrushColor(Color.argb(COLOR_ALPHA_VALUE, 39,250,255));
 				
 				setBrushBtnImage(v);
 			}
@@ -171,7 +174,7 @@ public class IlustrationFragment extends Fragment {
 			public void onClick(View v) {
 				//selectBrushColor(Color.rgb(57,181,74));
 				
-				selectBrushColor(Color.rgb(0,250,0));
+				selectBrushColor(Color.argb(COLOR_ALPHA_VALUE,0,250,0));
 				
 				setBrushBtnImage(v);
 			}
@@ -181,7 +184,7 @@ public class IlustrationFragment extends Fragment {
 		mColorMagentaImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				selectBrushColor(Color.rgb(146,39,143));
+				selectBrushColor(Color.argb(COLOR_ALPHA_VALUE, 146,39,143));
 				
 				setBrushBtnImage(v);
 			}
@@ -191,9 +194,7 @@ public class IlustrationFragment extends Fragment {
 		mNextPageBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				notifyNextPage();
-				
-				clearCanvas();
+				onNextPage();
 			}
 		});
 	}
@@ -263,5 +264,13 @@ public class IlustrationFragment extends Fragment {
 	private void resetBrushBtnImage() {
 		mShowBushListButton.setImageResource(R.drawable.crayon_btn);
 	}
+	
+	private void onNextPage() {
+		notifyNextPage();
+		
+		ExportIllustrationUtil.saveImage(mPageSurface.getContent());
+		clearCanvas();
+	}
+
 	
 }

@@ -35,10 +35,6 @@ public class IllustrationSurfaceView extends SurfaceView implements SurfaceHolde
 	private boolean mIsClipartSelected;
 	
 	private int mCurrentBrushColor = Color.TRANSPARENT;
-	private boolean mIsEraserSelected;
-	
-	private Bitmap mBrushBitmap;
-	private Canvas mBrushCanvas;
 	
     public IllustrationSurfaceView(Context context, AttributeSet attSet) {
     	super(context, attSet);
@@ -62,27 +58,27 @@ public class IllustrationSurfaceView extends SurfaceView implements SurfaceHolde
 
 		});
 	    
-	    
-	    mBrushBitmap = Bitmap.createBitmap(holder.getSurfaceFrame().width(), holder.getSurfaceFrame().height(), Bitmap.Config.ARGB_8888);
-        mBrushCanvas = new Canvas(mBrushBitmap);
-	    
 	    updateCanvas();
 	}
 	  
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 		
-		mBrushBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        mBrushCanvas = new Canvas(mBrushBitmap);
-		
+		    
 	}
 
 	public void surfaceDestroyed(SurfaceHolder holder) {
 	}
 	
 	
-	private void updateCanvas() {
-		Canvas canvas  = sh.lockCanvas();
+	
+	@Override
+	protected void onDraw(Canvas canvas) {
+		super.onDraw(canvas);
 		
+		drawEntities(canvas);
+	}
+
+	private void drawEntities(Canvas canvas) {
 		canvas.drawColor(Color.TRANSPARENT);
 		
 		Rect srcRect = new Rect(mBackgroudBmp.getWidth()/2, 0, mBackgroudBmp.getWidth(), mBackgroudBmp.getHeight());
@@ -98,15 +94,21 @@ public class IllustrationSurfaceView extends SurfaceView implements SurfaceHolde
 		}
 		
 		paint = new Paint();
-		paint.setXfermode(new PorterDuffXfermode(Mode.MULTIPLY));
+		//paint.setXfermode(new PorterDuffXfermode(Mode.MULTIPLY));
 		
 		for (Brush brushStroke : mBrushstrokeList) {
 			paint.setColor(brushStroke.mColor);
 			paint.setStyle(Paint.Style.FILL);
 			canvas.drawCircle(brushStroke.mPosX, brushStroke.mPosY, brushStroke.mRadius, paint);
 		}
+	}
+
+	private void updateCanvas() {
+		/*Canvas canvas  = sh.lockCanvas();
+		drawEntities(canvas);
+		sh.unlockCanvasAndPost(canvas);*/
 		
-		sh.unlockCanvasAndPost(canvas);
+		this.invalidate();
 	}
 	  
 	private void onTouchHandler(MotionEvent event) {
@@ -217,6 +219,14 @@ public class IllustrationSurfaceView extends SurfaceView implements SurfaceHolde
 		mBrushstrokeList.clear();
 		mClipartList.clear();
 		updateCanvas();
+	}
+	
+	public Bitmap getContent() {
+		Bitmap canvasContentBmp = Bitmap.createBitmap(this.getWidth(), this.getHeight(), Bitmap.Config.ARGB_8888);
+		Canvas canvasOut= new Canvas(canvasContentBmp);
+		draw(canvasOut);
+		
+		return canvasContentBmp;		
 	}
 
 }
