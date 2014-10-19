@@ -3,6 +3,7 @@ package com.rombotsteam.ebook;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -56,6 +57,9 @@ public class IlustrationFragment extends Fragment implements IBackendRespListene
 	private ImageButton mSaveImageBtn;
 
 	private IPageSwitchListener mPageSwitchListener;
+
+
+	private ProgressDialog mLoadingPageDlg;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,6 +72,8 @@ public class IlustrationFragment extends Fragment implements IBackendRespListene
 		super.onActivityCreated(savedInstanceState);
 
 		setupControls();
+		
+		showLoadingDlg();
 	}
 
 	private void setupControls() {
@@ -89,11 +95,13 @@ public class IlustrationFragment extends Fragment implements IBackendRespListene
 					mClipartGrid.setVisibility(View.VISIBLE);
 					mColorsLayout.setVisibility(View.INVISIBLE);
 					resetBrushBtnImage();
+					resetClipartBtnImage();
 				} else {
 					mClipartGrid.setVisibility(View.INVISIBLE);
 					resetBrushBtnImage();
 					
 					setEraserBrush();
+					resetClipartBtnImage();
 				}
 			}
 		});
@@ -109,6 +117,7 @@ public class IlustrationFragment extends Fragment implements IBackendRespListene
 				mPageSurface.setCurrentClipart(selClipart.mFilePath);
 				mPageSurface.setClipartSelected(true);
 				
+				setClipartBtnImage(selClipart);
 			}
 		});
 		
@@ -214,6 +223,14 @@ public class IlustrationFragment extends Fragment implements IBackendRespListene
 		});
 	}
 	
+	protected void resetClipartBtnImage() {
+		mShowClipartListButton.setImageResource(R.drawable.doodles);
+	}
+
+	protected void setClipartBtnImage(Clipart clipart) {
+		mShowClipartListButton.setImageBitmap(clipart.mBmp);
+	}
+
 	protected void clearCanvas() {
 		mPageSurface.clearAll();
 	}
@@ -281,6 +298,8 @@ public class IlustrationFragment extends Fragment implements IBackendRespListene
 	}
 	
 	private void onNextPage() {
+		showLoadingDlg();
+		
 		notifyNextPage();
 		
 		clearCanvas();
@@ -339,8 +358,27 @@ public class IlustrationFragment extends Fragment implements IBackendRespListene
 			mClipartList.clear();
 			mClipartList.addAll(mCliparts);
 			mAdapter.notifyDataSetChanged();
+			closeLoadingDlg();
 		}
 		
+	}
+	
+	private void showLoadingDlg() {
+		closeLoadingDlg();
+		
+		mLoadingPageDlg = new ProgressDialog(getActivity());
+		
+		mLoadingPageDlg.setMessage("Loading please wait...");
+		mLoadingPageDlg.setIndeterminate(true);
+		
+		mLoadingPageDlg.show();
+	}
+
+	private void closeLoadingDlg() {
+		if (mLoadingPageDlg != null) {
+			mLoadingPageDlg.dismiss();
+			mLoadingPageDlg = null;
+		}
 	}
 	
 }

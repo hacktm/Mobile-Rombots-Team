@@ -62,7 +62,7 @@ public class FileUtil {
 			if(files != null) {
 				for (String file : files) {
 					if (file.toLowerCase().contains(matchStr.toLowerCase())) {
-						Log.i("ebook", "FILE " + file + " matched " + matchStr);
+						//Log.i("ebook", "FILE " + file + " matched " + matchStr);
 						matchingFileList.add(subDir+"/"+file);
 					}
 				}
