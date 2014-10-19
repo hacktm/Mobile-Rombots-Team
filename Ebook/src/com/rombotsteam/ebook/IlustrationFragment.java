@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.textservice.TextInfo;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -25,7 +24,7 @@ import android.widget.ImageView;
 
 public class IlustrationFragment extends Fragment implements IBackendRespListener {
 
-	protected static final int COLOR_ALPHA_VALUE = 100;
+	protected static final int COLOR_ALPHA_VALUE = 60;
 
 
 	private static final String CLIPART_ASSETS_FOLDER = "clipart";

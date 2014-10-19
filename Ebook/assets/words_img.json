@@ -63,6 +63,17 @@
 	"village" : ["village", "town", "city"],
 	"wine" : ["wine"], 
 	"wolf" : ["wolf", "wolves", "beast", "monster", "hound", "dog"],
-	"wood" : ["wood"]
+	"wood" : ["wood"],
+	"bear" : ["bear", "bears" , "beast", "wild", "grizzly"],
+	"chair" : ["chair", "seat"],
+	"person" : ["him", "he", "person", "dude"],
+	"table" : ["table"],
+	"breakfast" : ["breakfast", "food", "morning"],
+	"porridge" : ["porridge", "food", "hot"],
+	"spoon" : ["spoon"],
+	"baby" : ["baby"], 
+	"pillow" : ["pillow", "bed", "sleep"],
+	"lamp" : ["lamp", "light"],
+	"kitchen" : ["kitchen"]
 }
 
